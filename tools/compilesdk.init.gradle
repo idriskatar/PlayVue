@@ -1,0 +1,26 @@
+// Eski kalmış eklentilerin (ör. file_picker -> android-34) compileSdk değerini en az 36'ya çıkarır.
+// ~/.gradle/init.d/ altına kopyalanır (tools/bootstrap.sh bunu otomatik yapar).
+allprojects {
+    afterEvaluate { project ->
+        def android = project.extensions.findByName('android')
+        if (android == null) return
+        int cur = 0
+        try {
+            def s = android.compileSdkVersion
+            if (s != null) cur = s.toString().replace('android-', '').toInteger()
+        } catch (Throwable ignored) {
+            try { cur = android.compileSdk as int } catch (Throwable ignored2) { }
+        }
+        if (cur < 36) {
+            try {
+                android.compileSdkVersion(36)
+            } catch (Throwable t1) {
+                try {
+                    android.compileSdk = 36
+                } catch (Throwable t2) {
+                    println "compileSdk 36 ayarlanamadi: ${project.name}"
+                }
+            }
+        }
+    }
+}

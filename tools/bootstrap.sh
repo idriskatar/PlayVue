@@ -19,6 +19,11 @@ fi
 
 if [ "$TARGET" != "ios" ]; then
   python3 tools/patch_android.py
+  # Eklentilerin eski compileSdk değerini yükselt (Gradle init betiği)
+  INIT_DIR="${GRADLE_USER_HOME:-$HOME/.gradle}/init.d"
+  mkdir -p "$INIT_DIR"
+  cp tools/compilesdk.init.gradle "$INIT_DIR/compilesdk.gradle"
+  echo "Gradle init betiği kuruldu: $INIT_DIR/compilesdk.gradle"
 fi
 
 if [ "$TARGET" != "android" ]; then
