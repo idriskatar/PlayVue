@@ -31,7 +31,7 @@ jobs:
           cache: true
 
       - name: Platform klasörlerini üret ve yamala
-        run: tools/bootstrap.sh android
+        run: bash tools/bootstrap.sh android
 
       - name: Bağımlılıkları indir
         run: flutter pub get
